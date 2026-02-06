@@ -60,10 +60,42 @@ export class HTMLExporter
 		return Settings.fileBlacklist.every((pattern) => !file.path.match(new RegExp(pattern)))
 	}
 
+	private static unique(value : TFile, index : number, array : TFile[]) {
+		return array.findIndex(other => other.path === value.path) === index
+	}
+
+	public static collect(file : TFile, depth = 2, acc : string[] = []) : TFile[] {
+		if(depth <= 0) return []
+		if(acc.includes(file.path)) return []
+			
+		const cache = app.metadataCache.getFileCache(file)
+		if(!cache) return []
+		
+		const frontmatterLinks = cache.frontmatterLinks ?? []
+		const links = cache.links ?? []
+		const embeds = cache.embeds ?? []
+
+		// Links in this file
+		const allLinks = [...frontmatterLinks,...links,...embeds]
+			.map(link => app.metadataCache.getFirstLinkpathDest(link.link,""))
+			.filter(link => this.doPublish(link))
+			.filter(this.unique)
+		// Recurse on links in this file.
+		const collectedLinks = allLinks
+			.filter(link => !acc.includes(link.path))
+			.flatMap(link => this.collect(link, depth - 1, [file.path, ...acc]))
+			.filter(link => this.doPublish(link))
+			.filter(this.unique)
+			
+		return [...allLinks, ...collectedLinks]
+			.filter(this.unique)
+	}
+
 	public static async exportFiles(files: TFile[], destination: Path, saveFiles: boolean, deleteOld: boolean) : Promise<Website | undefined>
 	{
 		MarkdownRendererAPI.beginBatch();
 		files = files.filter(file => this.doPublish(file))
+		files = files.flatMap(file => [file,...this.collect(file)]).filter(this.unique)
 		let website = undefined;
 		try
 		{
