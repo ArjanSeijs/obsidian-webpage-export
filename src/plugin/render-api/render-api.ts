@@ -65,16 +65,16 @@ export namespace MarkdownRendererAPI {
 		return await this.renderFileToString(file, options);
 	}
 
-	export async function renderMarkdownSimple(markdown: string): Promise<string | undefined> {
+	export async function renderMarkdownSimple(markdown: string, filePath : string = "/"): Promise<string | undefined> {
 		const container = document.body.createDiv();
-		await _MarkdownRendererInternal.renderSimpleMarkdown(markdown, container);
+		await _MarkdownRendererInternal.renderSimpleMarkdown(markdown, container, filePath);
 		const text = container.innerHTML;
 		container.remove();
 		return text;
 	}
 
-	export async function renderMarkdownSimpleEl(markdown: string, container: HTMLElement) {
-		await _MarkdownRendererInternal.renderSimpleMarkdown(markdown, container);
+	export async function renderMarkdownSimpleEl(markdown: string, container: HTMLElement, filePath : string = "/") {
+		await _MarkdownRendererInternal.renderSimpleMarkdown(markdown, container, filePath);
 	}
 
 	export function isConvertable(extention: string) {
@@ -703,10 +703,10 @@ export namespace _MarkdownRendererInternal {
 		return newMarkdownEl;
 	}
 
-	export async function renderSimpleMarkdown(markdown: string, container: HTMLElement) {
+	export async function renderSimpleMarkdown(markdown: string, container: HTMLElement, filePath : string = "/") {
 		const renderComp = new Component();
 		renderComp.load();
-		await ObsidianRenderer.render(app, markdown, container, "/", renderComp);
+		await ObsidianRenderer.render(app, markdown, container, filePath, renderComp);
 		renderComp.unload();
 
 		const renderedEl = container.children[container.children.length - 1];

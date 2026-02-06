@@ -95,7 +95,8 @@ export class OutlineTreeItem extends TreeItem
 
 	protected override async insertInner(container: HTMLElement): Promise<HTMLDivElement> 
 	{
-		const linkEl = await super.insertInner(container);
+		const filePath = (this.tree as OutlineTree ).file?.path
+		const linkEl = await super.insertInner(container, filePath);
 		linkEl?.setAttribute("heading-name", this.heading);
 		linkEl.classList.add("heading-link");
 

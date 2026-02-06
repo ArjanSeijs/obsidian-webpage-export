@@ -1,6 +1,7 @@
 import { MarkdownRendererAPI } from "src/plugin/render-api/render-api";
 import { Path } from "src/plugin/utils/path";
 import { FeatureGenerator } from "src/plugin/features/feature-generator";
+import { TFile } from "obsidian";
 
 export class Tree implements FeatureGenerator
 {
@@ -194,11 +195,11 @@ export class TreeItem
 		return itemEl;
 	}
 
-	protected async insertInner(container: HTMLElement): Promise<HTMLDivElement>
+	protected async insertInner(container: HTMLElement, filePath? : string): Promise<HTMLDivElement>
 	{
 		const itemContentsEl = container.createDiv("tree-item-inner");
 
-		if (this.tree.renderMarkdownTitles) MarkdownRendererAPI.renderMarkdownSimpleEl(this.title, itemContentsEl);
+		if (this.tree.renderMarkdownTitles) MarkdownRendererAPI.renderMarkdownSimpleEl(this.title, itemContentsEl, filePath);
 		else itemContentsEl.innerText = this.title;
 
 		// remove a tags from the title

@@ -268,7 +268,7 @@ export class Webpage extends Attachment
 		
 		for (const header of headings)
 		{
-			const h = await MarkdownRendererAPI.renderMarkdownSimple(header.heading) ?? header.heading;
+			const h = await MarkdownRendererAPI.renderMarkdownSimple(header.heading, this.sourcePath) ?? header.heading;
 			header.heading = h;
 		}
 
