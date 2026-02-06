@@ -47,9 +47,23 @@ export class HTMLExporter
 		new Notice("✅ Finished HTML Export:\n\n" + exportPath, 5000);
 	}
 
+	public static doPublish(file : TFile | null) : file is TFile {
+		if(!file) return false;
+		const frontmatter = app.metadataCache.getFileCache(file)?.frontmatter;
+		if (frontmatter && (frontmatter.publish === "false" || frontmatter.publish === false)) {
+			ExportLog.log(`Skipping file with publish=false: ${file.path}`);
+			return false;
+		}
+		if (frontmatter && (frontmatter.publish === "true" || frontmatter.publish === true)) {
+			return false;
+		}
+		return Settings.fileBlacklist.every((pattern) => !file.path.match(new RegExp(pattern)))
+	}
+
 	public static async exportFiles(files: TFile[], destination: Path, saveFiles: boolean, deleteOld: boolean) : Promise<Website | undefined>
 	{
 		MarkdownRendererAPI.beginBatch();
+		files = files.filter(file => this.doPublish(file))
 		let website = undefined;
 		try
 		{

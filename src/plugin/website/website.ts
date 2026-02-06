@@ -115,23 +115,13 @@ export class Website
 		return commonPath.length > 0 ? new Path(commonPath.join("/")).path : '';
 	}
 
-	public doPublish(file : TFile) {
-		if(!file) return false;
-		const frontmatter = app.metadataCache.getFileCache(file)?.frontmatter;
-		if (frontmatter && (frontmatter.publish === "false" || frontmatter.publish === false)) {
-			ExportLog.log(`Skipping file with publish=false: ${file.path}`);
-			return false;
-		}
-		return true;
-	}
-
 	public async load(files?: TFile[]): Promise<this>
 	{
 		ExportLog.resetProgress();
 		ExportLog.addToProgressCap((files?.length ?? 0));
 		ExportLog.addToProgressCap((files?.length ?? 0) * 0.1);
 
-		this.sourceFiles = files?.filter((file) => this.doPublish(file)) ?? [];
+		this.sourceFiles = files?.filter((file) => file) ?? [];
 
 		let rootPath = this.findCommonRootPath(this.sourceFiles);
 		this.exportOptions.exportRoot = rootPath;

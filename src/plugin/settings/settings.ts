@@ -48,6 +48,7 @@ export class Settings
 	// Graph View Settings
 	public static filePickerBlacklist: string[] = ["(^|\\/)node_modules\\/","(^|\\/)dist\\/","(^|\\/)dist-ssr\\/","(^|\\/)\\.vscode\\/"]; // ignore node_modules, dist, and .vscode
 	public static filePickerWhitelist: string[] = ["\\.\\w+$"]; // only include files with extensions
+	public static fileBlacklist: string[] = ["(^|\\/)node_modules\\/","(^|\\/)dist\\/","(^|\\/)dist-ssr\\/","(^|\\/)\\.vscode\\/"]
 
 	public static async onlinePreset()
 	{
