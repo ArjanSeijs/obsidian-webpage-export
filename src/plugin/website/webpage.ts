@@ -561,6 +561,9 @@ export class Webpage extends Attachment
 		}
 
 		this.pageDocument.documentElement.lang = moment.locale();
+		this.pageDocument.querySelectorAll('.callout[data-callout="export-hidden"').forEach(el => {
+			el.remove()
+		})
 
 		await this.generateOutput();
 

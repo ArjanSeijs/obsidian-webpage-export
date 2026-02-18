@@ -301,3 +301,15 @@ details.settings-section[open] > summary > svg
 {
 	rotate: 90deg;
 }
+
+.callout[data-callout="export-hidden"] {
+  --callout-color: 0, 0, 0, 0;
+  --callout-icon: lucide-hat-glasses;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.callout[data-callout="export-hidden"] > .callout-title {
+  --callout-color: 0, 0, 0, 255;;
+}
