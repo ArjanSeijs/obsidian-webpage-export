@@ -62,6 +62,7 @@ export interface WebpageData extends FileData
 	author: string;
 	coverImageURL: string;
 	fullURL: string;
+	secret: boolean
 }
 
 export class WebsiteOptions

@@ -311,5 +311,6 @@ details.settings-section[open] > summary > svg
 }
 
 .callout[data-callout="export-hidden"] > .callout-title {
-  --callout-color: 0, 0, 0, 255;;
+  --callout-color: 0, 0, 0, 255;
+    justify-content: center;
 }

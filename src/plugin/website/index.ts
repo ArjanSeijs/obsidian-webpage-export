@@ -453,10 +453,11 @@ export class Index
 			webpageInfo.sourceSize = webpage.source.stat.size;
 			webpageInfo.sourcePath = new Path(webpage.source.path).path;
 			webpageInfo.exportPath = webpage.targetPath.path;
-			webpageInfo.showInTree = webpage.showInTree;
+			webpageInfo.showInTree = webpage.showInTree && !webpage.outputData.secret;
 			webpageInfo.treeOrder = webpage.treeOrder;
 			webpageInfo.backlinks = webpage.outputData.backlinks.map((backlink) => backlink.targetPath.path);
 			webpageInfo.type = webpage.type;
+			webpageInfo.secret = webpage.outputData.secret;
 			if (this.exportOptions.combineAsSingleFile)
 			{
 				webpageInfo.data = webpage.data.toString();

@@ -490,6 +490,7 @@ export class GraphView extends InsertedFeature<GraphViewOptions>
 			if (!this.options.showAttachments && (data.type == "attachment" || data.type == "media" || data.type == "other"))
 				return false;
 
+			if(data.secret) return false;
 			return true;
 		});
 

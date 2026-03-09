@@ -35,6 +35,7 @@ export class WebpageOutputData
 	public srcLinks: string[] = [];
 	public hrefLinks: string[] = [];
 	public linksToOtherFiles: string[] = [];
+	public secret: boolean = false
 }
 
 export class Webpage extends Attachment
@@ -105,6 +106,7 @@ export class Webpage extends Attachment
 		output.srcLinks = this.srcLinks;
 		output.hrefLinks = this.hrefLinks;
 		output.linksToOtherFiles = this.linksToOtherFiles;
+		output.secret = this.frontmatter?.publish?.toLowerCase() === "secret"
 
 		this.data = output.html;
 
@@ -423,6 +425,7 @@ export class Webpage extends Attachment
 		const backlinks = Array.from(app.metadataCache.getBacklinksForFile(this.source)?.data?.keys?.() || []);
 		let linkedWebpages = backlinks.map((path: string) => this.website.index.getWebpage(path)) as Webpage[];
 		linkedWebpages = linkedWebpages.filter((page) => page != undefined);
+		linkedWebpages = linkedWebpages.filter((page) => !page.outputData.secret);
 		return linkedWebpages;
 	}
 

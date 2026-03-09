@@ -54,8 +54,8 @@ export class HTMLExporter
 			ExportLog.log(`Skipping file with publish=false: ${file.path}`);
 			return false;
 		}
-		if (frontmatter && (frontmatter.publish === "true" || frontmatter.publish === true)) {
-			return false;
+		if (frontmatter && (frontmatter.publish === "true" || frontmatter.publish === true || frontmatter.publish?.toLowerCase() === "secret")) {
+			return true;
 		}
 		return Settings.fileBlacklist.every((pattern) => !file.path.match(new RegExp(pattern)))
 	}

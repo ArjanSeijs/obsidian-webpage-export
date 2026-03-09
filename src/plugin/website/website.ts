@@ -168,7 +168,7 @@ export class Website
 				if (isConvertable)
 				{
 					let webpage = new Webpage(file, file.name, this, this.exportOptions);
-					webpage.showInTree = true;
+					webpage.showInTree = !webpage.outputData.secret;
 					await this.index.addFile(webpage);
 				}
 
@@ -187,7 +187,11 @@ export class Website
 			// create file tree asset
 			if (this.exportOptions.fileNavigationOptions.enabled)
 			{
-				const paths = this.index.attachmentsShownInTree.map((file) => new Path(file.sourcePathRootRelative ?? ""));
+				let paths = this.index.attachmentsShownInTree.map((file) => new Path(file.sourcePathRootRelative ?? ""));
+				paths = paths.filter(p => {
+					let front = app.metadataCache.getCache(p.toString())?.frontmatter ?? {}
+					return front.publish?.toLowerCase() !== "secret";
+				})
 				this.fileTree = new FileTree(paths, false, true);
 				this.fileTree.makeLinksWebStyle = this.exportOptions.slugifyPaths ?? true;
 				this.fileTree.showNestingIndicator = true;
