@@ -455,7 +455,7 @@ export class Index
 			webpageInfo.exportPath = webpage.targetPath.path;
 			webpageInfo.showInTree = webpage.showInTree && !webpage.outputData.secret;
 			webpageInfo.treeOrder = webpage.treeOrder;
-			webpageInfo.backlinks = webpage.outputData.backlinks.map((backlink) => backlink.targetPath.path);
+			webpageInfo.backlinks = webpage.outputData.backlinks.filter(page => !page.outputData.secret).map((backlink) => backlink.targetPath.path);
 			webpageInfo.type = webpage.type;
 			webpageInfo.secret = webpage.outputData.secret;
 			if (this.exportOptions.combineAsSingleFile)

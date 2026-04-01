@@ -98,7 +98,7 @@ export class Webpage extends Attachment
 		output.allTags = this.allTags;
 		output.frontmatterTags = this.frontmatterTags;
 		output.aliases = this.aliases;
-		output.backlinks = this.backlinks;
+		output.backlinks = this.backlinks.filter(page => !page.outputData.secret);
 		output.headings = this.headings;
 		output.renderedHeadings = await this.getRenderedHeadings();
 		output.descriptionOrShortenedContent = this.descriptionOrShortenedContent;
