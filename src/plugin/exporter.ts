@@ -77,13 +77,13 @@ export class HTMLExporter
 
 		// Links in this file
 		const allLinks = [...frontmatterLinks,...links,...embeds]
-			.map(link => app.metadataCache.getFirstLinkpathDest(link.link,""))
+			.map(link => app.metadataCache.getFirstLinkpathDest(link.link,"")!)
 			.filter(link => this.doPublish(link))
 			.filter(this.unique)
 		// Recurse on links in this file.
 		const collectedLinks = allLinks
-			.filter(link => !acc.includes(link.path))
-			.flatMap(link => this.collect(link, depth - 1, [file.path, ...acc]))
+			.filter(link => !acc.includes(link!.path))
+			.flatMap(link => this.collect(link!, depth - 1, [file.path, ...acc]))
 			.filter(link => this.doPublish(link))
 			.filter(this.unique)
 			
