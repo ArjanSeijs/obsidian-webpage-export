@@ -136,7 +136,8 @@ export class Webpage extends Attachment
 		output.srcLinks = this.srcLinks;
 		output.hrefLinks = this.hrefLinks;
 		output.linksToOtherFiles = this.linksToOtherFiles;
-		output.secret = this.frontmatter?.publish?.toLowerCase() === "secret"
+		let publish = this.frontmatter?.publish;
+		output.secret = publish === true || (typeof publish === "string" && publish?.toLowerCase() === "secret")
 
 		this.data = output.html;
 
@@ -594,7 +595,7 @@ export class Webpage extends Attachment
 		}
 
 		this.pageDocument.documentElement.lang = moment.locale();
-		this.pageDocument.querySelectorAll('.callout[data-callout="export-hidden"').forEach(el => {
+		this.pageDocument.querySelectorAll('.callout[data-callout="export-hidden"]').forEach(el => {
 			el.remove()
 		})
 

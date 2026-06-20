@@ -49,6 +49,7 @@ export class Settings
 	public static filePickerBlacklist: string[] = ["(^|\\/)node_modules\\/","(^|\\/)dist\\/","(^|\\/)dist-ssr\\/","(^|\\/)\\.vscode\\/"]; // ignore node_modules, dist, and .vscode
 	public static filePickerWhitelist: string[] = ["\\.\\w+$"]; // only include files with extensions
 	public static fileBlacklist: string[] = ["(^|\\/)node_modules\\/","(^|\\/)dist\\/","(^|\\/)dist-ssr\\/","(^|\\/)\\.vscode\\/"]
+	public static publishCommand: string = "";
 
 	public static async onlinePreset()
 	{
@@ -353,6 +354,12 @@ export class SettingsPage extends PluginSettingTab
 			() => Settings.exportOptions.offlineResources,
 			(value) => Settings.exportOptions.offlineResources = value,
 			lang.makeOfflineCompatible.description);
+
+		//TODO toggle with warning
+		createText(section, lang.publishCommand.title,
+			() => Settings.publishCommand ?? '',
+			(value) => Settings.publishCommand = value,
+			lang.publishCommand.description);
 
 		// #endregion
 

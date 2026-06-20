@@ -11,6 +11,7 @@ import { _MarkdownRendererInternal, ExportLog, MarkdownRendererAPI } from 'src/p
 import { DataviewRenderer } from './render-api/dataview-renderer';
 import { Website } from './website/website';
 import { i18n } from './translations/language';
+import {CommandModal} from "./utils/command-modal";
 
 
 
@@ -94,6 +95,22 @@ export default class HTMLExportPlugin extends Plugin {
 				HTMLExporter.export(false);
 			},
 		});
+
+		this.addCommand({
+			id: "publish-html-vault",
+			name: "Export and publish vault using previous settings",
+			callback: async () => {
+				if(!this.settings.publishCommand || this.settings.publishCommand === "") {
+					new Notice("Skipping publishing as no command is set");
+					return
+				}
+				await HTMLExporter.export(true);
+				let exportPath: string = this.settings.exportOptions.exportPath;
+				exportPath = `${exportPath}${exportPath.endsWith('/') ? '' : '/'}`;
+				let command = this.settings.publishCommand.replace("${export}", exportPath);
+				new CommandModal(this.app, command).open()
+			}
+		})
 
 		this.registerEvent(
 			this.app.workspace.on("file-menu", (menu, file) => {

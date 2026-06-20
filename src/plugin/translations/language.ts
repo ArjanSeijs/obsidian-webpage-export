@@ -231,7 +231,10 @@ export interface i18n
 			title: string;
 			description: string;
 		},
-
+		publishCommand: {
+			title : string,
+			description : string
+		},
 	}
 }
 

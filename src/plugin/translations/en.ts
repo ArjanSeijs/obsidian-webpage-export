@@ -227,5 +227,9 @@ export const language: i18n =
 			title: "Title Property",
 			description: "The property to use as the title of the document",
 		},
+		publishCommand : {
+			title : 'Publish command',
+			description: 'Command to execute. It will replace ${export} with "/path/to/output" (including quotes)'
+		}
 	}
 }
