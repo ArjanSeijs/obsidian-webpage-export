@@ -226,5 +226,9 @@ export const language: i18n =
 			title: "Propriedade de Título",
 			description: "Propriedade a ser usada como título do documento",
 		},
+		publishCommand : {
+			title : 'Comando Publish',
+			description: 'Comando para executar. Vai substituir ${export} por "/path/to/output" (incluindo aspas)'
+		}
 	}
 }

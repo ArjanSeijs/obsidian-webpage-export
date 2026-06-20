@@ -226,5 +226,9 @@ export const language: i18n =
 			title: "标题属性",
 			description: "用作文档标题的属性",
 		},
+		publishCommand : {
+			title : '发布命令',
+			description: '命令执行。它会把 ${export} 替换成 "/path/to/output"（包括引号）'
+		}
 	}
 }

@@ -225,5 +225,9 @@ export const language: i18n =
 			title: "Властивість заголовка",
 			description: "Властивість для використання як заголовок документа",
 		},
+		publishCommand : {
+			title : 'Команда публікації',
+			description: 'Команда на виконання. Він замінить ${export} на «/path/to/output» (включно з лапками)'
+		}
 	}
 }

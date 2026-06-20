@@ -220,5 +220,9 @@ export const language: i18n =
 			title: "Proprietà del Titolo",
 			description: "La proprietà da utilizzare come titolo del documento",
 		},
+		publishCommand : {
+			title : 'Comando Publish',
+			description: 'Comando di esecuzione. Sostituirà ${export} con "/path/to/output" (inclusi i virgoletti)'
+		}
 	}
 };
