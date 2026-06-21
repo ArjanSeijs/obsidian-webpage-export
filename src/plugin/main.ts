@@ -98,7 +98,22 @@ export default class HTMLExportPlugin extends Plugin {
 
 		this.addCommand({
 			id: "publish-html-vault",
-			name: "Export and publish vault using previous settings",
+			name: "Publish currently exported vault",
+			callback: () => {
+				if(!this.settings.publishCommand || this.settings.publishCommand === "") {
+					new Notice("Skipping publishing as no command is set");
+					return
+				}
+				let exportPath: string = this.settings.exportOptions.exportPath;
+				exportPath = `"${exportPath}${exportPath.endsWith('/') ? '' : '/'}"`;
+				let command = this.settings.publishCommand.replace("${export}", exportPath);
+				new CommandModal(this.app, command).open()
+			}
+		})
+
+		this.addCommand({
+			id: "export-publish-html-vault",
+			name: "Export and Publish vault using previous settings",
 			callback: async () => {
 				if(!this.settings.publishCommand || this.settings.publishCommand === "") {
 					new Notice("Skipping publishing as no command is set");
@@ -106,11 +121,12 @@ export default class HTMLExportPlugin extends Plugin {
 				}
 				await HTMLExporter.export(true);
 				let exportPath: string = this.settings.exportOptions.exportPath;
-				exportPath = `${exportPath}${exportPath.endsWith('/') ? '' : '/'}`;
+				exportPath = `"${exportPath}${exportPath.endsWith('/') ? '' : '/'}"`;
 				let command = this.settings.publishCommand.replace("${export}", exportPath);
 				new CommandModal(this.app, command).open()
 			}
 		})
+
 
 		this.registerEvent(
 			this.app.workspace.on("file-menu", (menu, file) => {
