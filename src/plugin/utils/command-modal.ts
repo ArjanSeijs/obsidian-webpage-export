@@ -1,5 +1,6 @@
 import {exec} from 'child_process';
 import {Modal, App, Setting, Platform} from 'obsidian';
+import {ExecException} from "node:child_process";
 
 export class CommandModal extends Modal {
 	constructor(app: App, command: string) {
@@ -38,12 +39,22 @@ export class CommandModal extends Modal {
 					.onClick(async () => {
 						btn.setDisabled(true)
 						btn.setIcon('loader')
+						let output : string;
+						let error : string;
+						try {
+							let result = (await execCommand(command));
+							output = result.stdout;
+							error = result.stderr
+						} catch(e) {
+							let result = e as {error:ExecException,stderr:string};
+							output = "Exited with: " + result.error.code
+							error = result.stderr;
+						}
 
-						let output = await execCommand(command);
 						btn.setButtonText("Execute Command")
 						btn.setDisabled(false)
 						code = code ?? this.contentEl.createEl('code')
-						code.innerText = output;
+						code.innerText = output + "\n" + error;
 					})
 			)
 			.addButton(btn =>
@@ -53,13 +64,13 @@ export class CommandModal extends Modal {
 }
 
 function execCommand(command: string) {
-	return new Promise<string>((resolve, reject) => {
+	return new Promise<{ stdout:string,stderr:string }>((resolve, reject) => {
 		exec(command, (error, stdout, stderr) => {
 			if (error) {
 				console.error(error);
 				reject({error,stderr});
 			} else {
-				resolve(stdout)
+				resolve({stdout,stderr})
 			}
 		})
 	})
